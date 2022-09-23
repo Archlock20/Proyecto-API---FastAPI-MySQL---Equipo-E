@@ -6,7 +6,7 @@ info:
 
     Algunos Links que podrian ser de utilidad:
     - [Repositorio - CRUD Estudiantes](https://github.com/Archlock20/Proyecto-API---FastAPI-MySQL---Equipo-E)
-    - [Documentacion de OpenAPI](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+    - [Documentacion de OpenAPI](https://github.com/Archlock20/Proyecto-API---FastAPI-MySQL---Equipo-E/blob/master/openapi.yaml)
   version: 0.1.0
 paths:
   /users/lista_est:
