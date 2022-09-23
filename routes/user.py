@@ -34,12 +34,12 @@ def get_studentid(id: str):
 
 
 # Ruta y funcion para consultar usuarios a traves de su numero de cedula
-@user.get("/users/search_est_ced/{cedula}", tags=["users"])
+@user.get("/users/search_est_ced/{cedula}", response_model=User, tags=["users"])
 def get_studentcedula(cedula: str):
     return conn.execute(users.select().where(users.c.cedula == cedula)).first()
 
 # Ruta y funcion para consultar usuarios a traves de su numero de apellido/os
-@user.get("/user/search_est_apellido/{lastname}", tags=["users"])
+@user.get("/user/search_est_apellido/{lastname}", response_model=User, tags=["users"])
 def get_studentapellido(lastname: str):
     return conn.execute(users.select().where(users.c.lastname == lastname)).first()
 

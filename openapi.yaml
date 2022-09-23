@@ -1,0 +1,306 @@
+openapi: 3.0.2
+info:
+  title: API - CRUD Estudiantes - Equipo E
+  description: |-
+    CRUD Estudiantes es una una api desarrollada utilizando el lenguaje de programacion "Python" en conjunto con una libreria especialializada en la creacion de API's tipo REST "FastAPI". Esta api, tal como su nombre lo indica, permite la realizacion de las operaciones basicas que se pueden realizar en un CRUD: Consultar, Ingresar, Actualizar o Borrar registros de una Base de datos. Esta API posee una conexion hacia una base de datos local de MySQL en donde se almacenaran/gestionaran todos los registros correspondientes a las consultas que se realizen desde la API. 
+
+    Algunos Links que podrian ser de utilidad:
+    - [Repositorio - CRUD Estudiantes](https://github.com/Archlock20/Proyecto-API---FastAPI-MySQL---Equipo-E)
+    - [Documentacion de OpenAPI](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  version: 0.1.0
+paths:
+  /users/lista_est:
+    get:
+      tags:
+        - users
+      summary: Ruta para obtener la lista de estudiantes
+      description: Esta ruta realiza una peticion de tipo GET la cual permitira la presentacion de una lista en donde se mostrara la completitud de registros (estudiantes) que se almacenan en ese instante en la base de datos. Los datos obtenidos a partir de la misma se presentan en formato JSON siguiendo la estructura y orden con la que fueron planteados previamente.
+        
+        
+        No es necesario el ingreso de ningun parametro para poder ingresar a esta ruta
+        
+        
+        En nuestro servidor local la direccion completa de la ruta es http://127.0.0.1:8000/users/lista_est
+      operationId: get_liststudents_users_lista_est_get
+      responses:
+        '200':
+          description: Respuesta satisfactoria.- Si la solicitud al servidor ha tenido exito entonces los datos relacionados a la misma se presentaran conforme a la estructura que se muestra a continuacion. El campo contrasena de todos los registros que se muestren estaran encriptados.
+          content:
+            application/json:
+              schema:
+                title: Response Get Liststudents Users Lista Est Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /users/add_est:
+    post:
+      tags:
+        - users
+      summary: Ruta para anadir un nuevo estudiante
+      description: Esta ruta realiza un peticion de tipo POST, la cual va a permitir que se agregren todos los datos necesarios para anadir un nuevo registro (estudiante) a la base de datos. La lista de campos a ingresar se muestra de la misma forma en la que se estructuro previamente en la base de datos. Cabe resaltar que no es necesario agregar un valor al campo "id" ya que este campo se asifna automaticamente al momento de ejecutar un nuevo registro en la base de datos.
+      
+      
+        Es recomendable rellenar todos los campos que se muestran antes de
+        realizar el guardado del registro, para evitar inconvenientes con la base de datos
+        
+        
+        En nuestro servidor local la direccion completa de la ruta es http://127.0.0.1:8000/users/add_est
+        
+      operationId: create_student_users_add_est_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Respuesta satisfactoria.- Si la solicitud al servidor ha tenido exito entonces apareceran todos los campos en los que se procedera a asignarles el valor que el usuario de la API crea correspondiente. Al momento crear un nuevo estudiante el encriptado de la contrasena no estara disponible, sin embargo, este funcionara normalmente cuando se quiera consultar uno o varios registros (a traves de la ruta mencionada anteriormente)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Error de validacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/search_est/{id}:
+    get:
+      tags:
+        - users
+      summary: Ruta para obtener un registro (estudiante) a traves de su id
+      description: Esta ruta realiza una peticion de tipo GET mediante la cual se obtienen los datos de un estudiante en especifico, la forma para obtener este registro esta configurada mediante el parametro "id" ya que mediante el identificador con el que se haya guardado un estudiante en la base de datos se podra realizar la respectiva busqueda y obtener la informacion completa asociada a un registro en especifico.
+      
+      
+        Es necesario el ingreso del parametro id para la correcta ejecucion de la peticion.
+        
+        
+        En nuestro servidor local la direccion completa de la ruta es http://127.0.0.1:8000/users/search_est/{id}
+      operationId: get_studentid_users_search_est__id__get
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: string
+          name: id
+          in: path
+      responses:
+        '200':
+          description: Respuesta satisfactoria.- Si la solicitud al servidor ha tenido exito entonces los datos relacionados a la misma se presentaran conforme a la estructura que se muestra a continuacion.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Error de validacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/search_est_ced/{cedula}:
+    get:
+      tags:
+        - users
+      summary: Ruta para obtener un registro (estudiante) a traves de su numero de cedula
+      description: Esta ruta realiza una peticion de tipo GET mediante la cual se obtienen los datos de un estudiante en especifico, la forma para obtener este registro esta configurada mediante el parametro "cedula" ya que mediante el numero de identificacion con el que se haya guardado un estudiante en la base de datos se podra realizar la respectiva busqueda y obtener la informacion completa asociada a un registro en especifico.
+      
+      
+        Es necesario el ingreso del parametro "cedula" para la correcta ejecucion de la peticion.
+        
+        
+        En nuestro servidor local la direccion completa de la ruta es http://127.0.0.1:8000/users/search_est/{cedula}
+      operationId: get_studentcedula_users_search_est_ced__cedula__get
+      parameters:
+        - required: true
+          schema:
+            title: Cedula
+            type: string
+          name: cedula
+          in: path
+      responses:
+        '200':
+          description: Respuesta satisfactoria.- Si la solicitud al servidor ha tenido exito entonces los datos relacionados a la misma se presentaran conforme a la estructura que se muestra a continuacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /user/search_est_apellido/{lastname}:
+    get:
+      tags:
+        - users
+      summary: Ruta para obtener un registro (estudiante) a traves de su apellido
+      description: Esta ruta realiza una peticion de tipo GET mediante la cual se obtienen los datos de un estudiante en especifico, la forma para obtener este registro esta configurada mediante el parametro "apellido" ya que mediante el numero de identificacion con el que se haya guardado un estudiante en la base de datos se podra realizar la respectiva busqueda y obtener la informacion completa asociada a un registro en especifico.
+      
+      
+        Es necesario el ingreso del parametro "apellido" para la correcta ejecucion de la peticion. Si el registro a buscar ha sido registrado utilizando dos apellidos es necesario colocarlos completos en el campo de busqueda para que esta se realize de forma correcta.
+        
+        
+        En nuestro servidor local la direccion completa de la ruta es http://127.0.0.1:8000/users/search_est_apellid/{apellido}
+      operationId: get_studentapellido_user_search_est_apellido__lastname__get
+      parameters:
+        - required: true
+          schema:
+            title: Lastname
+            type: string
+          name: lastname
+          in: path
+      responses:
+        '200':
+          description: Respuesta satisfactoria.- Si la solicitud al servidor ha tenido exito entonces los datos relacionados a la misma se presentaran conforme a la estructura que se muestra a continuacion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/delete_est/{id}:
+    delete:
+      tags:
+        - users
+      summary: Ruta para eliminar un estudiante en la base de datos
+      description: Esta ruta realiza una peticion de tipo DELETE mediante la cual se puede eliminar registros en la base de datos asociada, para realizar la eliminacion se debe conocer con anterioridad el id del registro especifico a eliminar, cabe destacar que una vez borrado un registro su "id" asociada tambien dejara de estar disponible, en otras palabras, no se puede borrar un registro mas de una vez.
+      
+      
+        Como se menciono con anterioridad, es necesario que se conozca el parametro "id" del registro que se quiere eliminar.
+        
+        
+        En nuestro servidor local la direccion completa de la ruta es http://127.0.0.1:8000/users/delete_est/{id}
+      operationId: delete_student_users_delete_est__id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: string
+          name: id
+          in: path
+      responses:
+        '204':
+          description: Respuesta satisfactoria.- Si la solicitud al servidor ha tenido exito entonces el registro (estudiante) asociado a la id ingresada sera eliminado de la  base de datos, la eliminacion del registro no enviara ningun tipo de mensaje por pantalla, por lo que si se desea comprobar que el registro se elimino correctamente se debe hacer la consulta correspondiente en la lista de registros y corroborar que este ya no existe en la base de datos. 
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /users/update_est/{id}:
+    put:
+      tags:
+        - users
+      summary: Ruta para actualizar/modificar la informacion de un estudiante
+      description: Esta ruta realiza una peticion de tipo UPDATE mediante la cual se pueden actualizar los datos de un registro en la base de datos asociada, para realizar la actualizacion se debe conocer el id del registro especifico a modificar, es necesario mencionar que no es una buena recomendable cambiar el id que el registro tiene por defecto ya que esto puede traer inconvenientes internos con la base de datos, tambien se puede mencionar que al momento de cambiar los datos de un registro todos apareceran con el valor "string" por lo que si tan solo se desea cambiar un campo es obligatorio volver a rellenar el resto de campos del registro tambien.
+      
+      
+        Como se menciono con anterioridad, es necesario que se conozca el parametro "id" del registro que se quiere eliminar.
+        
+        
+        En nuestro servidor local la direccion completa de la ruta es http://127.0.0.1:8000/users/update_est/{id}
+      operationId: modify_student_users_update_est__id__put
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: string
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Respuesta satisfactoria.- Si la solicitud al servidor ha tenido exito entonces aparecera la estructura que muestra a continuacion, todos los campos con el valor "string" de forma predeterminada independientemente del id ingresado del registro a modificar.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    User:
+      title: User
+      required:
+        - cedula
+        - name
+        - lastname
+        - age
+        - email
+        - gender
+        - password
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+        cedula:
+          title: Cedula
+          type: string
+        name:
+          title: Name
+          type: string
+        lastname:
+          title: Lastname
+          type: string
+        age:
+          title: Age
+          type: string
+        email:
+          title: Email
+          type: string
+        gender:
+          title: Gender
+          type: string
+        password:
+          title: Password
+          type: string
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+tags:
+  - name: users
+    description: Rutas para la API de estudiantes
