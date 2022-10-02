@@ -10,7 +10,7 @@ f = Fernet(key)
 
 user = APIRouter()
 
-# Ruta raiz, en donde se enlistan los estudiantes almacenados en la base de datos
+# Ruta y funcion en donde se enlistan los estudiantes almacenados en la base de datos
 @user.get("/users/lista_est", response_model=list[User], tags=["users"])
 def get_liststudents():
     return conn.execute(users.select()).fetchall()
@@ -38,7 +38,7 @@ def get_studentid(id: str):
 def get_studentcedula(cedula: str):
     return conn.execute(users.select().where(users.c.cedula == cedula)).first()
 
-# Ruta y funcion para consultar usuarios a traves de su numero de apellido/os
+# Ruta y funcion para consultar usuarios a traves de su apellido/os
 @user.get("/user/search_est_apellido/{lastname}", response_model=User, tags=["users"])
 def get_studentapellido(lastname: str):
     return conn.execute(users.select().where(users.c.lastname == lastname)).first()
